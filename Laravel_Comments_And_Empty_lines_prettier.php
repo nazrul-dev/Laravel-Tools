@@ -1,13 +1,14 @@
 <?php
 /*
 |--------------------------------------------------------------------------
-| Remove Laravel Comments
+| Remove Laravel/PHP Comments
 |--------------------------------------------------------------------------
-|
-| Just made a new Laravel project, but don't want all those big
-| comment blocks? Put this in the root of your project and run
-| "php remove_laravel_comments.php"
-|
+|--------------------------------------------------------------------------
+| Remove Empty Line
+|--------------------------------------------------------------------------
+|--------------------------------------------------------------------------
+| Remove Blade Comments
+|--------------------------------------------------------------------------
 */
 
 $directories = [
@@ -20,7 +21,9 @@ $directories = [
   'routes',
 ];
 
-$base = './ dir';
+// You Dir Htdocs C:laragon/www/example/
+
+$base = 'C:laragon/www/example';
 
 foreach ($directories as $dir) {
     $it = new RecursiveDirectoryIterator($base . $dir);
@@ -30,8 +33,10 @@ foreach ($directories as $dir) {
             $contents = file_get_contents($file->getRealPath());
 			$php_comments = preg_replace('/^(\{?)\s*?\/\*(.|[\r\n])*?\*\/([\r\n]+$|$)/im', '$1', $contents);
 			$blade_comments = preg_replace('/<!--.*?-->/ms', '$1', $contents);
+			$remove_empty_lines = preg_replace("/(^[\r\n]*|[\r\n]+)[\s\t]*[\r\n]+/", "\n", $contents);
             file_put_contents($file->getRealPath(), $php_comments);
 			file_put_contents($file->getRealPath(), $blade_comments);
+			file_put_contents($file->getRealPath(), $remove_empty_lines);
         }
 	
     }
